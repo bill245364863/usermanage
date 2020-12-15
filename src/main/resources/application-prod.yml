@@ -1,0 +1,113 @@
+application:
+  #应用名称：当使用到微服务配置中心时，name必须和对应应用匹配
+  name: imKit
+
+#日志打印配置
+logging:
+  config: classpath:logback-spring.xml
+
+#server配置参数
+server:
+  port: 8087
+
+#spring配置参数
+spring:
+  session:
+    store-type: hash_map
+  servlet:
+    multipart:
+      maxFileSize: 1MB
+      maxRequestSize: 1MB
+  thymeleaf:
+    #模板的模式，支持 HTML, XML TEXT JAVASCRIPT
+    mode: LEGACYHTML5
+    #编码 可不用配置
+    encoding: UTF-8
+    #内容类别,可不用配置
+    content-type: text/html
+    #开发配置为false,避免修改模板还要重启服务器
+    cache: false
+    #配置模板路径，默认是templates，可以不用配置
+    prefix: classpath:/public/
+    #    prefix: file:E:/company/02.prject/12.amc-react/02.src/fc/fc-server/src/main/resources/public/
+    #在构建URL时附加到视图名称的后缀。
+    suffix: .html
+  resources:
+    static-locations:file:./html/
+  datasource:
+    imKitDs:
+      name: main-mysql
+      # MYSQL Setting
+      #      driver-class-name: com.mysql.cj.jdbc.Driver
+      #     url: jdbc:mysql://192.168.40.380:3306/imkit?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+      #    username: userbill
+      #   password: userbill
+      #   validationQuery: select 1
+
+      #Oracle Setting]
+      dbType: oracle
+      url: jdbc:oracle:thin:@192.168.41.50:1521:orcl
+      username: userimkit
+      password: userimkit
+      validationQuery: select 1 from dual
+
+      # Common Setting
+      initialSize: 20
+      maxActive: 50
+
+
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+  redis: #现场需要修改
+    database: 7
+    host: 192.168.3.235
+    port: 6379
+    password: apexinfo
+    pool:
+      max-active: 100
+      max-idle: 5
+      max-wait: 60000
+
+
+#aas框架配置参数
+aas:
+  #是否启用蜂巢监控
+  amc:
+    enabled: false
+  #swagger插件配置
+  swagger:
+    enabled: true
+    showDemo: true
+imKit:
+  app-id: imKit-demo-web
+  app-secret: 417e876c-709a-4066-8b69-e7bf417af062
+  mqtt:
+    server:
+      hosts: 192.168.41.52        #必填 EMQX地址
+      api-app-id: 811b909c97ae2    #必填 EMQX 应用ID
+      api-app-secret: Mjk2MzM1ODc4OTk1MDIwNTAzOTkyMDc4MzI1NzUzNDQ2NDA #EMQX 应用密钥 必填
+    #      api-port: 8080             #EMQX management api端口 不配置默认8080 EMQX集群该端口需要配置成一致 可选
+    #      tcp-port: 1883             #EMQX tcp端口，不配置默认1883
+    #      username: lsj              #EMQX 配置的用户名 可选
+    #      password: lsj              #EMQX 配置的密码 可选
+    client:
+      common:
+        hosts: 192.168.41.52   #EMQX服务地址或者nginx服务代理地址 必填 如果是nginx代理地址，端口必填
+        #      sslEnabled: false     #客户端和EMQX服务通信 是否是加密传输 默认 false 可选
+        #      clientAuth: false     #是否是双向加密传输 默认 false 可选
+        #      authMode: 0           #是否用户密码认证 0|无 2|需要用户名和密码 默认 0 可选
+        ws-port: 8083         #EMQX websoket非加密端口或者nginx服务代理websoket端口 默认8083 web sdk使用 可选    如果hosts是nginx代理地址 必填
+        #      wss-port: 8084        #EMQX websoket加密端口或者nginx服务代理websoket SSL端口 默认8084  h5 sdk使用 可选  如果hosts是nginx代理地址 必填
+        tcp-port: 1883        #EMQX TCP非加密端口或者nginx服务代理TCP端口 默认1883 android ios sdk使用 可选      如果hosts是nginx代理地址 必填
+  #      ssl-port: 8883        #EMQX TCP加密端口或者nginx服务代理TCP SSL端口 默认8883 android ios sdk使用 可选    如果hosts是nginx代理地址 必填
+  #      username: lsj         #EMQX 配置的用户名 可选 authMode为2时必填
+  #      password: lsj         #EMQX 配置的密码 可选 authMode为2时必填
+  #      sub-qos: 2            #EMQX 发布主题类型 0 1 2 默认 2 可选
+  #      pub-qos: 2            #EMQX 订阅主题类型 0 1 2 默认 2 可选
+  notice:
+    enable: true
+  attach:
+    dir: /home/ams/imkit/document
