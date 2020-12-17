@@ -2,6 +2,7 @@ package com.bill.usermanage.config;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -27,11 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/forms.html").hasRole("vip3");
 
         //没有权限跳转到登陆页面
-        http.formLogin().permitAll().loginPage("/login.html").loginProcessingUrl("/login").defaultSuccessUrl("/");
+        http.formLogin().loginPage("/login.html").loginProcessingUrl("/login").defaultSuccessUrl("/").permitAll();
         //登出
-        http.logout().deleteCookies("billUser").invalidateHttpSession(true).logoutSuccessUrl("/");
+        http.logout().logoutSuccessUrl("/");
         //记住我
-        http.rememberMe().rememberMeCookieName("remember");
+        http.rememberMe().rememberMeCookieName("rememberme");
 
     }
 
@@ -45,5 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().passwordEncoder(new Pbkdf2PasswordEncoder())
                 .withUser("bill").password(new Pbkdf2PasswordEncoder().encode("1234")).roles("vip1","vip3");
+    }
+
+    /**
+     * 资源放行
+     * @param web
+     * @throws Exception
+     */
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers("/css/**","/data/**","/fonts/**","/icons-reference/**","/img/**","/js/**","/svg/**","/vendor/**");
     }
 }

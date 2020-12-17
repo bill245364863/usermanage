@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        //使用这个注册访问的页面
         //registry.addViewController("/index.html").setViewName("index");
         ///index.html为访问的路径，index跳转的资源
         registry.addViewController("/").setViewName("index");
@@ -27,6 +28,9 @@ public class MyMvcConfig implements WebMvcConfigurer {
         return new MyLocaleResolver();
     }
 
+    /**
+     * 资源拦截，url拦截，可以用srpingsecurity替代
+     */
  /*   @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        拦截全部的请求，除了不需要登陆session的请求
